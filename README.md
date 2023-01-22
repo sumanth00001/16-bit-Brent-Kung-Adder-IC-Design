@@ -1,11 +1,16 @@
-# 16-bit-Kogge-Stone Adder IC Design
-Kogge-Stone Adder is one of the parallel prefix type carry look ahead adder. Peter M. Kogge and Harold S. Stone constructed the KSA, which they have been published in year 1973. The Kogge-Stone prefix adder is the fastest adder. In VLSI implementations, the KS(Kogge-Stone) adder performs the best. With minimal fan-outs, the Kogge-Stone Adder has a large area. The Kogge-Stone Adder is commonly as a PPA that executes fastest logical additive operation. Because it exhibits the least amount of delay among the other architectures, the Kogge-Stone Adder is used for wide adders. At the each stage, the KS tree accomplishes fan-out of 2 at stages and log2 N stages. This is an effect of expense of having to route multiple lengthy wires between these stages. This tree also contains those additional PG cells, though which may not have such an effect on the area if an structure has been used to delay growth which tends to increase with an log N. Each vertical stage in figure generates bits for propagate and generation. The final step produces the generate bits, after in which they are XOR’ed with the input’s are initially propagated to create the sum bits.
+# 16-bit-Brent-Kung Adder IC Design
+Brent-Kung adder’s methodology was developed by Kung and Brent (1982) which uses
+fewer nodes for computation and has max depth, which causes increase in latency. If
+the only carry at which each and every power of 2 positions are computed as suggested
+by Kung and Brent, a simpler tree structure could be formed. In order to calculate
+intermediate carries, the inverse carry tree will be added. In comparison to a KoggeStone adder, its wire complexity is significantly lower. The structure’s delay will be
+denoted by [(2. log2 n) − 2] and the no of computational nodes by the [2.n − 2 − log2 n].
 
-![Kogge-Stone](https://user-images.githubusercontent.com/113964084/200914307-75676712-e01d-4ae3-a13c-8192eec3d988.png)
+![Brent-Kung](https://user-images.githubusercontent.com/113964084/213917042-9f5fd533-fd63-45b6-b571-e4b5c40612e9.png)
 
 
-This adder have been designed using the Verilog Hardware Description Language using Xilinx.ISE.Navigator.10.1 software, and modelsim.6.5e was used for all simulations. It is analysed and compared to determine how the proposed adders perform. The implementation code for 16-bit Kogge-Stone Adder was developed in this proposed architecture, and delay and area values have
-been observed . The correlation of adders is the major element in the trade-off between these various topologies. These simulated output wave forms and RTL schematics have been generated and synthesis is carried out by chipscope. OpenLANE and Caravel are used with Skywater 130nm PDK. OpenLANE flow consists of multiple itersative stages where we obtain GDSII form RTL netlist. This chip design acquired from OpenLANE is used in caravel to place it on an SoC and design is hardened by placing our HDL code in user_project_wrapper and user_proj_example in caravel folders.
+
+This adder have been designed using the Verilog Hardware Description Language using Xilinx.ISE.Navigator.10.1 software, and modelsim.6.5e was used for all simulations. It is analysed and compared to determine how the proposed adders perform. The implementation code for 16-bit Brent-Kung Adder was developed in this proposed architecture, and delay and area values have been observed . The correlation of adders is the major element in the trade-off between these various topologies. These simulated output wave forms and RTL schematics have been generated and synthesis is carried out by chipscope. OpenLANE and Caravel are used with Skywater 130nm PDK. OpenLANE flow consists of multiple itersative stages where we obtain GDSII form RTL netlist. This chip design acquired from OpenLANE is used in caravel to place it on an SoC and design is hardened by placing our HDL code in user_project_wrapper and user_proj_example in caravel folders.
 
 Open Source Digital ASIC Design requires three open-source components:  
 - **RTL Designs** = github.com, librecores.org, opencores.org
@@ -164,8 +169,9 @@ After running synthesis, inside the `runs/[date]/results/synthesis` is `ksa16_sy
 
 **3. Yosys synthesis:**
 
+![bka_yosys](https://user-images.githubusercontent.com/113964084/213917240-b804d04d-60bd-4fd0-a2f6-f11a74194fe2.png)
 
-![KSA16_yoys](https://user-images.githubusercontent.com/113964084/201079457-b5494078-f4f3-45f3-9e87-cf4ec6d49f43.png)
+
 
 
 ### Floorplan Stage:
@@ -224,8 +230,8 @@ if { [file exists $filename] == 1} {
 magic -T /home/ProgramFiles/openlane/pdks/sky130A/libs.tech/magic/sky130A.tech lef read ../../tmp/merged.lef read ksa16.floorplan.def
 ```  
 
-file:///home/ut01/Documents/FINAL/OPENLANE/KSA16/KSA/KSA_floor%20plan.png![image](https://user-images.githubusercontent.com/113964084/201077516-3f223986-67d5-4125-a71f-5097e6b6ec3c.png)
-
+file:///home/ut01/Documents/FINAL/OPENLANE/KSA16/KSA/KSA_floor%20plan.png![image]
+![BKA_floor plan](https://user-images.githubusercontent.com/113964084/213917297-1d9f164e-9ac7-4713-872f-c33228712d4e.png)
 
 
 ### Placement Stage:
@@ -243,11 +249,10 @@ The goal of placement is not yet on timing but on congestion. Also, standard cel
 magic -T //home/ProgramFiles/openlane/pdks/sky130A/libs.tech/magic/sky130A.tech lef read ../../tmp/merged.lef read ksa16.placement.def
 ```  
 
-file:///home/ut01/Documents/FINAL/OPENLANE/KSA16/KSA/KSA16_placement.png![image](https://user-images.githubusercontent.com/113964084/201077018-085aff7c-03e6-4e58-9788-cd90b616b192.png)
+file:///home/ut01/Documents/FINAL/OPENLANE/KSA16/KSA/KSA16_placement.png![image]
+![BKA16_placement](https://user-images.githubusercontent.com/113964084/213917337-db4569f2-d3f4-4f3f-acf9-bd89a78142e3.png)
+![BKA16_placement zoom1](https://user-images.githubusercontent.com/113964084/213917342-a3d8a295-6116-41af-a16c-f688ae444e3f.png)
 
-![KSA16_placement zoom2](https://user-images.githubusercontent.com/113964084/201089931-3207c969-c239-471b-85d0-c25cf020416b.png)
-
-![KSA16_placement zoom3](https://user-images.githubusercontent.com/113964084/201089948-9e31e8d4-85c0-4bb4-89fa-d18a7ce19261.png)
 
 ```
 Placement Analysis
@@ -339,7 +344,8 @@ Best reference for this the [Triton Route paper](https://www.google.com/url?sa=t
 magic -T /home/ProgramFiles/openlane/designs/ksa16/runs/KSA16/results/magic/ksa16.mag
 ```
 
-![ksa_klyout](https://user-images.githubusercontent.com/113964084/201312352-27519981-6de9-4ad6-b188-a3d51b9cd8d9.png)
+![bka_kylout](https://user-images.githubusercontent.com/113964084/213917396-648fc03f-f30c-437d-a107-63ac68655d89.png)
+
 
 
 **Library Characterization:**
@@ -387,7 +393,7 @@ Open the def file via magic with no DRC errors:
 magic -T /home/ProgramFiles/openlane/designs/ksa16/runs/KSA16/results/magic/ksa16.gds
 ```
 
-![KSA16_magic](https://user-images.githubusercontent.com/113964084/201313804-a8cc5644-7dbd-42cc-afcf-501c5a04d055.png)
+![BKA16_magic](https://user-images.githubusercontent.com/113964084/213917438-1db60e31-eaae-4e63-bf8d-ae4e6db3fea2.png)
 
 
 ```
